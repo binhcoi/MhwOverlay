@@ -1,0 +1,4 @@
+#Log
+LogType = Console
+LogFolder = Logs\
+MaxLogLines = 2000
