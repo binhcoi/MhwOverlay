@@ -14,6 +14,7 @@ namespace MhwOverlay.Config
             public const string LogFolder = "LogFolder";
         }
         private static Dictionary<string, string> ConfigDict = new Dictionary<string, string>();
+
         public static bool Load()
         {
             try
@@ -32,6 +33,7 @@ namespace MhwOverlay.Config
                         }
                     }
                 }
+                LoadMemoryConfig();
                 return true;
             }
             catch
@@ -40,9 +42,15 @@ namespace MhwOverlay.Config
             }
         }
 
+        public static void LoadMemoryConfig()
+        {
+            MemoryData = new MemoryConfig();
+        }
+
         public static LogType LogType { get { try { return GetEnum<LogType>(ConfigKey.LogType); } catch { return LogType.Console; } } }
         public static int MaxLogLines { get { return GetInt(ConfigKey.MaxLogLines); } }
         public static string LogFolder { get { return GetString(ConfigKey.LogFolder); } }
+        public static MemoryConfig MemoryData { get; set; }
 
         public static string ConfigToString()
         {
@@ -50,6 +58,11 @@ namespace MhwOverlay.Config
             foreach (var config in ConfigDict)
             {
                 result += $"{config.Key}={config.Value}\n";
+            }
+            if (MemoryData != null)
+            {
+                result += "\n MemoryData:";
+                result += MemoryData.ToString();
             }
             return result;
         }
