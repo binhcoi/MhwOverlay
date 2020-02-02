@@ -67,7 +67,7 @@ namespace MhwOverlay.UI
         }
 
         public void AppendInfo(string message)
-        {
+        {            
             mainWindow.AppendLog(message, Brushes.Black);
         }
         public void AppendWarn(string message)

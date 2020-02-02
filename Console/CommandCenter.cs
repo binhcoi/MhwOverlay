@@ -10,7 +10,7 @@ namespace MhwOverlay.Console
 {
     public class CommandCenter
     {
-        private  MainWindowModel mainModel;
+        private MainWindowModel mainModel;
         private List<string> commandList;
         private Dictionary<string, Func<string[], string>> commands = new Dictionary<string, Func<string[], string>>();
 
@@ -60,7 +60,7 @@ namespace MhwOverlay.Console
                 {
                     mainModel.AppendConsole(commands[args[0]].Invoke(args.ToArray()));
                 }
-                catch 
+                catch
                 {
                     mainModel.AppendConsole("Exception returns for command");
                 }

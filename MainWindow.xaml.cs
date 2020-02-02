@@ -29,10 +29,13 @@ namespace MhwOverlay
 
         public void AppendLog(string message, SolidColorBrush color)
         {
-            var run = new Run(message);
-            run.Foreground = color;
-            LogsTextBox.Document.Blocks.Add(new Paragraph(run));            
-            TrimLogs();
+            this.Dispatcher.Invoke(() =>
+            {
+                var run = new Run(message);
+                run.Foreground = color;
+                LogsTextBox.Document.Blocks.Add(new Paragraph(run));
+                TrimLogs();
+            });
         }
 
         private void TrimLogs()
@@ -50,10 +53,10 @@ namespace MhwOverlay
             {
                 model.Execute();
             }
-            else 
+            else
             {
-                model.HandleCommandInputKeys(e.Key);               
-            }           
+                model.HandleCommandInputKeys(e.Key);
+            }
         }
 
         private void ExecuteButton_Click(object sender, RoutedEventArgs e)

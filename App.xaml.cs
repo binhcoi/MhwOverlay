@@ -2,6 +2,7 @@
 using MhwOverlay.UI;
 using MhwOverlay.Config;
 using MhwOverlay.Log;
+using MhwOverlay.Core;
 
 namespace MhwOverlay
 {
@@ -18,8 +19,11 @@ namespace MhwOverlay
             var mainModel = new MainWindowModel(mainWindow);
             mainWindow.SetDataContext(mainModel);
             Logger.MainModel = mainModel;
-            AppConfig.Load();
+            if (!AppConfig.Load()){
+                Logger.Log(LogLevel.Error,"Config load failed!");
+            }
             Logger.Log(LogLevel.Info,"Configs loaded");
+            var memoryReader = new MhwMemoryReader();
         }
     }
 }
