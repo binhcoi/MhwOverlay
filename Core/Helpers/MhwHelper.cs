@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using MhwOverlay.Log;
 using System.Text.RegularExpressions;
+using MhwOverlay.Config;
 
 namespace MhwOverlay.Core.Helpers
 {
@@ -52,7 +53,11 @@ namespace MhwOverlay.Core.Helpers
                 var monster = UpdateMonster(process, monsterAddress);
                 if (monster != null)
                 {
-                    Logger.Log(LogLevel.Info, $"{monster.Id}: {monster.HP}/{monster.MaxHP} at {monster.Address}");
+                    var name = monster.Id;
+                    if (AppConfig.MonsterData.Monsters.ContainsKey(monster.Id)){
+                        name = AppConfig.GetLocalizationString(AppConfig.MonsterData.Monsters[monster.Id]);
+                    }
+                    Logger.Log(LogLevel.Info, $"{name}: {monster.HP}/{monster.MaxHP} at {monster.Address}");
                 }
             }
         }

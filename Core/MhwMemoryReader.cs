@@ -47,20 +47,21 @@ namespace MhwOverlay.Core
             if (mhwProcess != null && mhwProcess.HasExited)
             {
                 currentState = State.WaitingForProcess;
+                Logger.Log(LogLevel.Info, $"MHW Exited");
             }
             switch (currentState)
             {
                 case State.WaitingForProcess:
-                    Logger.Log(LogLevel.Info, $"Finding process.");
+                    //Logger.Log(LogLevel.Info, $"Finding process.");
                     DoTask(GetMhwProcess, 1000);
                     break;
                 case State.PatternScanning:
-                    Logger.Log(LogLevel.Info, "Finding monster pattern");
+                    //Logger.Log(LogLevel.Info, "Finding monster pattern");
                     DoTask(FindMonsterPattern, 1000);
                     break;
                 case State.UpdatingMonsters:
-                    Logger.Log(LogLevel.Info, "UpdateMonsters");
-                    DoTask(UpdateMonsters, 500);
+                    // Logger.Log(LogLevel.Info, "UpdateMonsters");
+                    DoTask(UpdateMonsters, 1500);
                     break;
             }
         }
@@ -83,6 +84,7 @@ namespace MhwOverlay.Core
             var result = MemoryHelper.FindPatternAddresses(mhwProcess, bytePattern);
             if (result != null)
             {
+                Logger.Log(LogLevel.Info, "Monster memory pattern found.");
                 monstersAddress = result.Value;
                 currentState = State.UpdatingMonsters;
             }

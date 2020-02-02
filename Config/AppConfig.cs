@@ -34,6 +34,8 @@ namespace MhwOverlay.Config
                     }
                 }
                 LoadMemoryConfig();
+                Localization = new LocalizationConfig();
+                MonsterData = new MonsterDataConfig();
                 return true;
             }
             catch
@@ -51,6 +53,15 @@ namespace MhwOverlay.Config
         public static int MaxLogLines { get { return GetInt(ConfigKey.MaxLogLines); } }
         public static string LogFolder { get { return GetString(ConfigKey.LogFolder); } }
         public static MemoryConfig MemoryData { get; set; }
+        private static LocalizationConfig Localization { get; set; }
+        public static MonsterDataConfig MonsterData { get; set; }
+
+        public static string GetLocalizationString(string key)
+        {
+            if (Localization.Strings.ContainsKey(key))
+                return Localization.Strings[key];
+            return key;
+        }
 
         public static string ConfigToString()
         {
