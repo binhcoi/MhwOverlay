@@ -23,7 +23,7 @@ namespace MhwOverlay
                 Logger.Log(LogLevel.Error,"Config load failed!");
             }
             Logger.Log(LogLevel.Info,"Configs loaded");
-            var memoryReader = new MhwMemoryReader();
+            var memoryReader = new MhwMemoryReader(mainModel);
         }
     }
 }
