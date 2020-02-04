@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -17,14 +16,14 @@ namespace MhwOverlay
     {
         private MainWindowModel model;
         public MainWindow()
-        {
-            InitializeComponent();
+        {            
+            InitializeComponent();            
         }
 
         public void SetDataContext(MainWindowModel model)
         {
             this.model = model;
-            DataContext = model;
+            DataContext = model;            
         }
 
         public void AppendLog(string message, SolidColorBrush color)

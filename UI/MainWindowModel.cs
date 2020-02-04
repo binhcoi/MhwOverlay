@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows.Media;
 using MhwOverlay;
@@ -11,12 +13,16 @@ namespace MhwOverlay.UI
         private CommandCenter commandCenter;
         private MainWindow mainWindow;
         private int commandOffset = 0;
-
+        public ObservableCollection<MonsterData> MonstersList
+        {
+            get; private set;
+        }
         public MainWindowModel(MainWindow window)
         {
             commandCenter = new CommandCenter(this);
             mainWindow = window;
-            CommandInputText=string.Empty;
+            CommandInputText = string.Empty;
+            MonstersList = new ObservableCollection<MonsterData>();           
         }
 
         private string consoleText;
@@ -38,7 +44,7 @@ namespace MhwOverlay.UI
                 SetProperty(ref commandInputText, value);
             }
         }
-
+   
         public void Execute()
         {
             commandCenter.Execute(CommandInputText);
@@ -67,7 +73,7 @@ namespace MhwOverlay.UI
         }
 
         public void AppendInfo(string message)
-        {            
+        {
             mainWindow.AppendLog(message, Brushes.Black);
         }
         public void AppendWarn(string message)
@@ -77,6 +83,15 @@ namespace MhwOverlay.UI
         public void AppendError(string message)
         {
             mainWindow.AppendLog(message, Brushes.Red);
+        }
+
+        public void ClearMonsterList(){
+           // this.
+           mainWindow.Dispatcher.Invoke(()=>{MonstersList.Clear();});
+        }
+
+        public void AddMonster(MonsterData monster){
+            mainWindow.Dispatcher.Invoke(()=>MonstersList.Add(monster));
         }
     }
 }

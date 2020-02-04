@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using MhwOverlay.UI.Overlay;
 
 namespace MhwOverlay.Console
 {
@@ -44,6 +45,25 @@ namespace MhwOverlay.Console
                 AppConfig.SetConfig("LogType", "Both");
                 return "Log to both console and file";
             });
+            commands.Add("show", args => {
+                var overlay = new OverlayWindow(mainModel);
+                overlay.Show();
+                overlay.DataContext = mainModel;
+                WindowHelper.SetTopMostTransparent(overlay);
+                return "Overlay on";
+            });
+            commands.Add("test", args => {
+               TestData();
+                return "testing";
+            });
+        }
+
+        private void TestData(){            
+           mainModel.MonstersList.Add(new MonsterData(){
+                Name="wowow",
+                HP=1.12f,
+                MaxHP=1.22f
+            });
         }
 
         public void Execute(string command)
@@ -60,7 +80,7 @@ namespace MhwOverlay.Console
                 {
                     mainModel.AppendConsole(commands[args[0]].Invoke(args.ToArray()));
                 }
-                catch
+                catch (Exception e)
                 {
                     mainModel.AppendConsole("Exception returns for command");
                 }

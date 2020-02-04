@@ -7,21 +7,24 @@ using System.Threading.Tasks;
 using MhwOverlay.Config;
 using MhwOverlay.Core.Helpers;
 using MhwOverlay.Log;
+using MhwOverlay.UI;
 
 namespace MhwOverlay.Core
 {
     public class MhwMemoryReader
     {
+        public MainWindowModel mainModel { get; set; }
         private enum State
         {
             WaitingForProcess,
             PatternScanning,
             UpdatingMonsters
         }
-        public MhwMemoryReader()
+        public MhwMemoryReader(MainWindowModel model)
         {
             processName = AppConfig.MemoryData.ProcessName;
             currentState = State.WaitingForProcess;
+            mainModel = model;
             Start();
         }
 
@@ -96,7 +99,11 @@ namespace MhwOverlay.Core
 
             var monsterBaseList = MemoryHelper.ReadMultiLevelPointer(false, mhwProcess, monsterRootPtr, 0x128, 0x8, 0x0);
 
-            MhwHelper.UpdateMonsters(mhwProcess, monsterBaseList);
+            mainModel.ClearMonsterList();
+            var list = MhwHelper.UpdateMonsters(mhwProcess, monsterBaseList);
+
+            foreach (var monster in list)
+                mainModel.AddMonster(monster);
         }
     }
 }

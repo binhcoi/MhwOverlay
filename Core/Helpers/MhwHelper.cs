@@ -4,6 +4,7 @@ using System.Linq;
 using MhwOverlay.Log;
 using System.Text.RegularExpressions;
 using MhwOverlay.Config;
+using MhwOverlay.UI;
 
 namespace MhwOverlay.Core.Helpers
 {
@@ -18,17 +19,12 @@ namespace MhwOverlay.Core.Helpers
         public static readonly ulong CurrentHealth = 0x64;
         public static readonly int IdLength = 32;
         public static readonly ulong IdOffset = 0x179;
-
-        public ulong Address { get; set; }
-        public string Id { get; set; }
-        public float MaxHP { get; set; }
-        public float HP { get; set; }
     }
 
 
     public static class MhwHelper
     {
-        public static void UpdateMonsters(Process process, ulong monsterBaseList)
+        public static List<MonsterData> UpdateMonsters(Process process, ulong monsterBaseList)
         {
             List<ulong> monsterAddresses = new List<ulong>();
 
@@ -47,22 +43,19 @@ namespace MhwOverlay.Core.Helpers
                 monsterAddresses.Insert(0, currentMonsterAddress);
                 currentMonsterAddress = MemoryHelper.Read<ulong>(process, currentMonsterAddress + Monster.NextMonsterOffset);
             }
-
+            var list = new List<MonsterData>();
             foreach (var monsterAddress in monsterAddresses)
             {
                 var monster = UpdateMonster(process, monsterAddress);
                 if (monster != null)
                 {
-                    var name = monster.Id;
-                    if (AppConfig.MonsterData.Monsters.ContainsKey(monster.Id)){
-                        name = AppConfig.GetLocalizationString(AppConfig.MonsterData.Monsters[monster.Id]);
-                    }
-                    Logger.Log(LogLevel.Info, $"{name}: {monster.HP}/{monster.MaxHP} at {monster.Address}");
+                    list.Add(monster);
                 }
             }
+            return list;            
         }
 
-        public static Monster UpdateMonster(Process process, ulong monsterAddress)
+        public static MonsterData UpdateMonster(Process process, ulong monsterAddress)
         {
             var tmp = monsterAddress + Monster.MonsterStartOfStructOffset + Monster.MonsterHealthComponentOffset;
             var health_component = MemoryHelper.Read<ulong>(process, tmp);
@@ -75,14 +68,18 @@ namespace MhwOverlay.Core.Helpers
             id = id.Split('\\').Last();
             if (!(new Regex("em[0-9]").IsMatch(id)))
                 return null;
-                
+
             if (maxHealth <= 0)
                 return null;
             var currentHealth = MemoryHelper.Read<float>(process, health_component + Monster.CurrentHealth);
-            return new Monster()
+            var name = id;
+            if (AppConfig.MonsterData.Monsters.ContainsKey(id))
             {
-                Address = monsterAddress,
-                Id = id,
+                name = AppConfig.GetLocalizationString(AppConfig.MonsterData.Monsters[id]);
+            }
+            return new MonsterData()
+            {
+                Name = name,
                 MaxHP = maxHealth,
                 HP = currentHealth
             };
