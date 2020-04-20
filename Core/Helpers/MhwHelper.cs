@@ -79,6 +79,7 @@ namespace MhwOverlay.Core.Helpers
             }
             return new MonsterData()
             {
+                Address = monsterAddress,
                 Name = name,
                 MaxHP = maxHealth,
                 HP = currentHealth

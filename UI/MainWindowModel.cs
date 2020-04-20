@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 using MhwOverlay;
@@ -22,7 +23,7 @@ namespace MhwOverlay.UI
             commandCenter = new CommandCenter(this);
             mainWindow = window;
             CommandInputText = string.Empty;
-            MonstersList = new ObservableCollection<MonsterData>();           
+            MonstersList = new ObservableCollection<MonsterData>();
         }
 
         private string consoleText;
@@ -44,7 +45,7 @@ namespace MhwOverlay.UI
                 SetProperty(ref commandInputText, value);
             }
         }
-   
+
         public void Execute()
         {
             commandCenter.Execute(CommandInputText);
@@ -85,13 +86,32 @@ namespace MhwOverlay.UI
             mainWindow.AppendLog(message, Brushes.Red);
         }
 
-        public void ClearMonsterList(){
-           // this.
-           mainWindow.Dispatcher.Invoke(()=>{MonstersList.Clear();});
+        public void AddOrUpdateMonster(MonsterData monster)
+        {
+            mainWindow.Dispatcher.Invoke(() =>
+            {
+                var existingMonster = MonstersList.FirstOrDefault(existing => existing.Address == monster.Address);
+                if (existingMonster != null)
+                {
+                    existingMonster.Name = monster.Name;
+                    existingMonster.HP = monster.HP;
+                    existingMonster.MaxHP = monster.MaxHP;
+                }
+                else
+                    MonstersList.Add(monster);
+            });
         }
 
-        public void AddMonster(MonsterData monster){
-            mainWindow.Dispatcher.Invoke(()=>MonstersList.Add(monster));
+        public void CleanMonsterList(List<MonsterData> list)
+        {
+            mainWindow.Dispatcher.Invoke(() =>
+            {
+                var exclude = MonstersList.Except(list);
+                foreach (var monster in exclude.Reverse())
+                {
+                    MonstersList.Remove(monster);
+                }
+            });
         }
     }
 }

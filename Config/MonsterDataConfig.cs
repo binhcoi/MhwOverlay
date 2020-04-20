@@ -66,7 +66,10 @@ namespace MhwOverlay.Config
             {"em124_00", "LOC_MONSTER_VELKHANA"},
             {"em125_00", "LOC_MONSTER_NAMIELLE"},
             {"em126_00", "LOC_MONSTER_SHARA_ISHVALDA"},
-            {"em127_00", "LOC_MONSTER_LESHEN"}
+            {"em127_00", "LOC_MONSTER_LESHEN"},
+            {"em023_00", "LOC_MONSTER_RAJANG"},
+            {"em057_01", "LOC_MONSTER_STYGIAN_ZINOGRE"},
+            {"em104_00", "LOC_MONSTER_SAFI_JIIVA"}
         };
     }
 }

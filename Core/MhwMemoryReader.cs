@@ -99,11 +99,10 @@ namespace MhwOverlay.Core
 
             var monsterBaseList = MemoryHelper.ReadMultiLevelPointer(false, mhwProcess, monsterRootPtr, 0x128, 0x8, 0x0);
 
-            mainModel.ClearMonsterList();
             var list = MhwHelper.UpdateMonsters(mhwProcess, monsterBaseList);
-
+            mainModel.CleanMonsterList(list);
             foreach (var monster in list)
-                mainModel.AddMonster(monster);
+                mainModel.AddOrUpdateMonster(monster);
         }
     }
 }

@@ -68,7 +68,9 @@ namespace MhwOverlay.Config{
             { "LOC_MONSTER_VAAL_HAZAK", "Vaal Hazak" },
             { "LOC_MONSTER_XENO_JIIVA", "Xeno'jiiva" },
             { "LOC_MONSTER_ZORAH_MAGDAROS", "Zorah Magdaros" },
-           
+            { "LOC_MONSTER_RAJANG", "Rajang" },
+            { "LOC_MONSTER_STYGIAN_ZINOGRE", "Stygian Zinogre" },
+            { "LOC_MONSTER_SAFI_JIIVA", "Safi'Jiiva" }
         };
         
         public LocalizationConfig()
